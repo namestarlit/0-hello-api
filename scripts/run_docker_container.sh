@@ -3,7 +3,13 @@
 set -e 
 set -x
 
-docker pull your-dockerhub-username/hello-api:latest
-# docker stop hello-api
-# docker rm hello-api
-docker run -d --name hello-api --env-file /path/to/your/application/.env -p 8000:8000 --restart unless-stopped your-dockerhub-username/hello-api:latest
+USERNAME=$1
+
+if [ -z "$USERNAME" ]; then
+  echo "Error: No username provided."
+  echo "Usage: $0 <username>"
+  exit 1
+fi
+
+docker pull "$USERNAME/hello-api:latest"
+docker run -d --name hello-api -p 80:80 --restart unless-stopped "$USERNAME/hello-api:latest"
