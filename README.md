@@ -3,7 +3,7 @@ A simple REST API application.
 ### Description
 API Endpoint: `GET /api/hello?vistor_name="Vistor Name`
 Response:
-```json
+```bash
 {
   "client_ip": "127.0.0.1", // The IP address of the requester
   "location": "New York" // The city of the requester
