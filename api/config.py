@@ -9,5 +9,7 @@ class Settings(BaseSettings):
     IPGEOLOCATION_API_KEY: str
     OPENWEATHER_API_KEY: str
 
+    CORS_ORIGINS: list[str] = ["http://localhost", "http://localhost:8080"]
+
 
 settings = Settings()

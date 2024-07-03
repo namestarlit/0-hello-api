@@ -1,8 +1,9 @@
 import logging
 from typing import Any
-from pydantic import BaseModel
-from fastapi import APIRouter, HTTPException
+
 import requests
+from fastapi import APIRouter, HTTPException
+from pydantic import BaseModel
 from requests.exceptions import RequestException
 
 from api.config import settings
@@ -45,7 +46,7 @@ def get_weather(city: str):
 
 
 @router.get("/hello", response_model=Info)
-def get_info(vistor_name: str) -> Any:
+async def get_info(vistor_name: str | None = "Mark") -> Any:
     try:
         client_ip = get_public_ip()
         location = get_location(client_ip)
