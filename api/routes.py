@@ -2,7 +2,7 @@ import logging
 from typing import Any
 
 import requests
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Request
 from pydantic import BaseModel
 from requests.exceptions import RequestException
 
@@ -22,13 +22,6 @@ class Info(BaseModel):
     greeting: str
 
 
-def get_public_ip():
-    url = "https://api.ipify.org?format=json"
-    response = requests.get(url)
-    response.raise_for_status()
-    return response.json()["ip"]
-
-
 def get_location(client_ip: str):
     url = "https://api.ipgeolocation.io/ipgeo"
     payload = {"apiKey": GEOLOCATION_API_KEY, "ip": client_ip, "fields": "city"}
@@ -46,9 +39,9 @@ def get_weather(city: str):
 
 
 @router.get("/hello", response_model=Info)
-async def get_info(vistor_name: str | None = "Mark") -> Any:
+async def get_info(*, vistor_name: str | None = "Mark", request: Request) -> Any:
     try:
-        client_ip = get_public_ip()
+        client_ip = request.client.host
         location = get_location(client_ip)
         city = location.get("city", "Unkown")
         weather_data = get_weather(city)
